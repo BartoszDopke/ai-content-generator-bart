@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AI Content Generation Tool</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    textarea, input { width: 100%; margin-top: 1rem; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; }
+    pre { background: #f0f0f0; padding: 1rem; margin-top: 1rem; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>AI Content Generation Tool</h1>
+  
+  <label for="userInput">Your Question:</label>
+  <textarea id="userInput" rows="4" placeholder="Type a question..."></textarea>
+
+  <button onclick="callLambda()">Ask</button>
+
+  <h2>Response:</h2>
+  <pre id="responseBox">Waiting for input...</pre>
+
+  <script>
+    async function callLambda() {
+      const inputText = document.getElementById('userInput').value.trim();
+      const responseBox = document.getElementById('responseBox');
+
+      if (!inputText) {
+        responseBox.textContent = "Please enter a question.";
+        return;
+      }
+
+      responseBox.textContent = "Thinking...";
+
+      try {"
+        const res = await fetch("${lambda_function_url}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain",
+            "X-goog-api-key": "${gemini_api_key}"
+          },
+          body: inputText
+        });
+
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+
+        const data = await res.json();
+        responseBox.textContent = data.response || JSON.stringify(data, null, 2);
+
+      } catch (err) {
+        responseBox.textContent = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>

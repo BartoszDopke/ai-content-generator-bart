@@ -1,0 +1,4 @@
+[] redact Gemini API key in the headers
+[] store API key in Secrets Manager
+[] auto-trigger Terraform when index.html is updated
+[] include Python packaging in the pipeline

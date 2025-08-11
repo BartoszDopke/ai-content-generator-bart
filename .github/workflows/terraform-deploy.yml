@@ -11,7 +11,6 @@ on:
 jobs:
   package-backend:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     defaults:
       run:
         working-directory: ai-content-generator-bart/backend
@@ -43,11 +42,10 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        if: github.event_name == 'pull_request'
         run: terraform plan
         env:
           TF_VAR_gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Terraform Apply
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve

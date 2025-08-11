@@ -7,7 +7,7 @@ terraform {
   backend "s3" {
     bucket         = "terraformbackendbartd"
     key            = "terraform.tfstate"
-    region         = var.aws_region
+    region         = "eu-central-1"
     use_lockfile   = true
   }
 }

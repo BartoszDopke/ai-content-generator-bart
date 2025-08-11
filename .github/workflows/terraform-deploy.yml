@@ -11,9 +11,6 @@ on:
 jobs:
   package-backend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ai-content-generator-bart/backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

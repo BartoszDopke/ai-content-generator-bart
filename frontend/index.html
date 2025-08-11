@@ -33,7 +33,7 @@
 
       responseBox.textContent = "Thinking...";
 
-      try {"
+      try {
         const res = await fetch("${lambda_function_url}", {
           method: "POST",
           headers: {

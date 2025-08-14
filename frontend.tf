@@ -29,10 +29,10 @@ resource "aws_s3_object" "index" {
   source = replace(
     replace(
       file("frontend/index.html"),
-      "${lambda_function_url}",
+      "lambda_function_url",
       aws_lambda_function_url.backend.function_url
     ),
-    "${gemini_api_key}",
+    "gemini_api_key",
     var.gemini_api_key
   )
   content_type = "text/html"

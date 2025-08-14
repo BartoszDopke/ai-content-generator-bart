@@ -34,11 +34,11 @@
       responseBox.textContent = "Thinking...";
 
       try {
-        const res = await fetch("${lambda_function_url}", {
+        const res = await fetch("lambda_function_url", {
           method: "POST",
           headers: {
             "Content-Type": "text/plain",
-            "X-goog-api-key": "${gemini_api_key}"
+            "X-goog-api-key": "gemini_api_key"
           },
           body: inputText
         });

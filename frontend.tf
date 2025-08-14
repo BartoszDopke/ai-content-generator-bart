@@ -26,7 +26,15 @@ resource "aws_s3_bucket_acl" "frontend_bucket" {
 resource "aws_s3_object" "index" {
   bucket       = aws_s3_bucket.frontend_bucket.id
   key          = "index.html"
-  source       = templatefile("frontend/index.html", { lambda_function_url = aws_lambda_function_url.backend.function_url, gemini_api_key = var.gemini_api_key })
+  source = replace(
+    replace(
+      file("frontend/index.html"),
+      "${lambda_function_url}",
+      aws_lambda_function_url.backend.function_url
+    ),
+    "${gemini_api_key}",
+    var.gemini_api_key
+  )
   content_type = "text/html"
 }
 

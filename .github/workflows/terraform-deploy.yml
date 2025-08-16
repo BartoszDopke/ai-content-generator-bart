@@ -11,9 +11,6 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -24,6 +21,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install dependencies
+        working-directory: backend
         run: python -m pip install --upgrade pip && pip install -r requirements.txt -t .
 
       - name: Set up Terraform

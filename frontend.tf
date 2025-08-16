@@ -23,7 +23,7 @@ resource "aws_s3_bucket_acl" "frontend_bucket" {
 resource "aws_s3_object" "index" {
   bucket = aws_s3_bucket.frontend_bucket.id
   key    = "index.html"
-  source = replace(
+  content = replace(
     replace(
       file("index.html"),
       "lambda_function_url",

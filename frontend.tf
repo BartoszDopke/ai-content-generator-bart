@@ -2,11 +2,9 @@ resource "random_integer" "random" {
   min = 100
   max = 1000
 }
-
 resource "aws_s3_bucket" "frontend_bucket" {
   bucket = "aicontentgeneratorbucket${random_integer.random.result}"
 }
-
 resource "aws_s3_bucket_ownership_controls" "frontend_bucket" {
   depends_on = [aws_s3_bucket_public_access_block.frontend_bucket]
 
@@ -15,7 +13,6 @@ resource "aws_s3_bucket_ownership_controls" "frontend_bucket" {
     object_ownership = "BucketOwnerPreferred"
   }
 }
-
 resource "aws_s3_bucket_acl" "frontend_bucket" {
   depends_on = [aws_s3_bucket_ownership_controls.frontend_bucket]
 
@@ -26,9 +23,9 @@ resource "aws_s3_bucket_acl" "frontend_bucket" {
 resource "aws_s3_object" "index" {
   bucket = aws_s3_bucket.frontend_bucket.id
   key    = "index.html"
-  source = replace(
+  content = replace(
     replace(
-      file("${path.module}/frontend/index.html"),
+      file("frontend/index.html"),
       "lambda_function_url",
       aws_lambda_function_url.backend.function_url
     ),
@@ -36,7 +33,7 @@ resource "aws_s3_object" "index" {
     var.gemini_api_key
   )
   content_type = "text/html"
-  etag         = filemd5("${path.module}/frontend/index.html")
+  etag         = filemd5("frontend/index.html")
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend_bucket" {
@@ -47,7 +44,6 @@ resource "aws_s3_bucket_public_access_block" "frontend_bucket" {
   ignore_public_acls      = false
   restrict_public_buckets = false
 }
-
 resource "aws_s3_bucket_website_configuration" "frontend_bucket" {
   bucket = aws_s3_bucket.frontend_bucket.id
 
@@ -59,7 +55,6 @@ resource "aws_s3_bucket_website_configuration" "frontend_bucket" {
     key = "index.html"
   }
 }
-
 resource "aws_s3_bucket_policy" "frontend_policy" {
   depends_on = [aws_s3_bucket_public_access_block.frontend_bucket]
 

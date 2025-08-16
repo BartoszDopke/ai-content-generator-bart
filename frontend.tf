@@ -25,7 +25,7 @@ resource "aws_s3_object" "index" {
   key    = "index.html"
   content = replace(
     replace(
-      file("index.html"),
+      file("frontend/index.html"),
       "lambda_function_url",
       aws_lambda_function_url.backend.function_url
     ),
@@ -33,7 +33,7 @@ resource "aws_s3_object" "index" {
     var.gemini_api_key
   )
   content_type = "text/html"
-  etag         = filemd5("index.html")
+  etag         = filemd5("frontend/index.html")
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend_bucket" {

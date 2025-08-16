@@ -26,17 +26,17 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install -r requirements.txt -t .
 
-      # - name: Add backend code to package
-      #   run: cp main.py ./
+      - name: check backend/ content
+        run: ls -la backend/
 
-      - name: Create deployment package
-        run: zip -r lambda.zip .
+      # - name: Create deployment package
+      #   run: zip -r lambda.zip .
 
-      - name: Upload deployment package artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: lambda.zip
-          path: backend/lambda.zip
+      # - name: Upload deployment package artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: lambda.zip
+      #     path: backend/lambda.zip
 
   terraform:
     runs-on: ubuntu-latest
@@ -57,7 +57,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Plan
-        run: terraform plan
+        run: |
+          ls -la backend/
+          terraform plan
         env:
           TF_VAR_gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

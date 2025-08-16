@@ -1,14 +1,14 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
+      source = "hashicorp/aws"
     }
   }
   backend "s3" {
-    bucket         = "terraformbackendbartd"
-    key            = "terraform.tfstate"
-    region         = "eu-central-1"
-    use_lockfile   = true
+    bucket       = "terraformbackendbartd"
+    key          = "terraform.tfstate"
+    region       = "eu-central-1"
+    use_lockfile = true
   }
 }
 

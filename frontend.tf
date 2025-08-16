@@ -24,11 +24,11 @@ resource "aws_s3_bucket_acl" "frontend_bucket" {
 }
 
 resource "aws_s3_object" "index" {
-  bucket       = aws_s3_bucket.frontend_bucket.id
-  key          = "index.html"
+  bucket = aws_s3_bucket.frontend_bucket.id
+  key    = "index.html"
   source = replace(
     replace(
-      file("frontend/index.html"),
+      file("${path.module}/frontend/index.html"),
       "lambda_function_url",
       aws_lambda_function_url.backend.function_url
     ),
@@ -36,6 +36,7 @@ resource "aws_s3_object" "index" {
     var.gemini_api_key
   )
   content_type = "text/html"
+  etag         = filemd5("${path.module}/frontend/index.html")
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend_bucket" {

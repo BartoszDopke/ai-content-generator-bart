@@ -16,7 +16,10 @@ jobs:
         working-directory: backend
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          #fetch-depth: 0
+          clean: false  
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -45,9 +48,8 @@ jobs:
     needs: [package-backend]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
-          fetch-depth: 0
           clean: false        
 
       - name: Set up Terraform
